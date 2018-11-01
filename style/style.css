@@ -18,7 +18,7 @@ body {
   min-height:inherit;
   width:100%;
   z-index:500;
-  transition: transform 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000); /* easeInOutExpo */;
+
 }
 
 .wbn-slide img {
@@ -32,12 +32,42 @@ body {
   z-index:1000;
 }
 
-.slideLeft {
+.slideInLeft {
+  /* transform: translateX(-100%); */
+  animation-name: animateInLeft;
+  /* animation-duration: 400ms; */
+  animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  z-index: 1000;
+}
+
+.slideInRight {
+  /* transform: translateX(100%); */
+  animation-name: animateInRight;
+  /* animation-duration: 400ms; */
+  animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+  z-index: 1000;
+}
+
+.slideOutLeft {
   transform: translateX(-100%);
 }
 
-.slideRight {
+.slideOutRight {
   transform: translateX(100%);
+}
+
+@keyframes animateInLeft {
+  0% { transform: translateX(-100%) }
+  100% { transform: translateX(0%) }
+  from { transform: translateX(-100%) }
+  to { transform: translateX(0%) }
+}
+
+@keyframes animateInRight {
+  0% { transform: translateX(100%) }
+  100% { transform: translateX(0%) }
+  from { transform: translateX(100%) }
+  to { transform: translateX(0%) }
 }
 
 .hide {

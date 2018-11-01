@@ -1,4 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+
+  // CHANGE ONLY THIS
+  const SLIDETIME = 400; //ms
+
+  // --------------------------
+
   const backButton = document.querySelector('.wbn-slider-back-btn');
   const forwardButton = document.querySelector('.wbn-slider-next-btn');
   // Select all slides and convert node to array for easy handling
@@ -13,13 +19,13 @@ document.addEventListener("DOMContentLoaded", () => {
   * Function to initialize the slider
   */
   function initSlider() {
-    const active = document.querySelector('.active');
-    const slideInterval = calcInterval(allSlides, active);
+
+    // Set the CSS transition on the slides to the value whe specified in SLIDETIME above
+    for (let slide of allSlides) {
+      slide.setAttribute('style', `transition: transform ${SLIDETIME}ms cubic-bezier(0.645, 0.045, 0.355, 1.000); animation-duration: ${SLIDETIME}ms`);
+    }
+
     const sliderHeight = document.querySelector('#wbn-slider').offsetHeight;
-
-    allSlides[slideInterval.activeMinusOne].classList.add('slideLeft');
-    allSlides[slideInterval.activePlusOne].classList.add('slideRight');
-
     // Set the height on the overlay texts to slider height if there is any
     const overlays = document.querySelectorAll('.wbn-overlay-text');
     overlays.forEach( element => element.style.height = `${sliderHeight}px`);
@@ -32,37 +38,11 @@ document.addEventListener("DOMContentLoaded", () => {
   */
   function changeSlide(direction) {
     if(clickable) {
+      clickable = false;
       const dir = direction;
       const active = document.querySelector('.active');
-      const slideInterval = calcInterval(allSlides, active);
-      clickable = false;
-
-      allSlides[slideInterval.active].addEventListener('transitionend', hideElement);
-
-      updateUI(dir, slideInterval);
+      updateUI(dir, active);
     }
-  }
-
-  /**
-  * Function that calculates an interval of five slides(indexes) around the active slide.
-  *
-  * @param {array} slideArray - An array containing all the slides
-  * @param {HTMLElement} activeSlide - The current active slide
-  *
-  * @return {object} An object with indexes containing the active slide, the two slides before that and the two slides after that
-  */
-  function calcInterval(slideArray, activeSlide) {
-    const slideInterval = {};
-    const totalSlides = slideArray.length;
-    const activeSlideIndex = slideArray.indexOf(activeSlide);
-
-    slideInterval.activeMinusTwo = (activeSlideIndex - 2 + totalSlides) % totalSlides;
-    slideInterval.activeMinusOne = (activeSlideIndex - 1 + totalSlides) % totalSlides;
-    slideInterval.active = activeSlideIndex;
-    slideInterval.activePlusOne = (activeSlideIndex + 1) % totalSlides;
-    slideInterval.activePlusTwo = (activeSlideIndex + 2) % totalSlides;
-
-    return slideInterval;
   }
 
   /**
@@ -71,54 +51,39 @@ document.addEventListener("DOMContentLoaded", () => {
   * @param {string} direction - A string containing either "back" or "forward" for knowing direction
   * @param {Object} slideInteval - An object with indexes containing the active slide, the two slides before that and the two slides after that
   */
-  function updateUI(direction, slideInterval) {
-    const slideInt = slideInterval;
-
-    // Hide all slides first
-    for(let element of allSlides) {
-      element.classList.add('hide');
-    }
+  function updateUI(direction, act) {
+    const active = act;
+    const activeSlideIndex = allSlides.indexOf(active);
 
     // This is the same for both directions
-    allSlides[slideInt.active].classList.remove('hide', 'active');
+    active.classList.remove('active');
 
     if (direction === "back") {
-      allSlides[slideInt.activeMinusTwo].classList.add('slideLeft');
-      allSlides[slideInt.activeMinusOne].classList.remove('slideLeft', 'hide');
-      allSlides[slideInt.activeMinusOne].classList.add('active');
-      allSlides[slideInt.active].classList.add('slideRight');
-      allSlides[slideInt.activePlusOne].classList.remove('slideRight');
-
-      newActive = allSlides[slideInt.activeMinusOne];
+      newActive = allSlides[(activeSlideIndex - 1 + allSlides.length) % allSlides.length];
+      active.classList.add('slideOutRight');
+      newActive.classList.add('slideInLeft', 'active');
     } else if (direction === "forward") {
-      allSlides[slideInt.activeMinusOne].classList.remove('slideLeft');
-      allSlides[slideInt.active].classList.add('slideLeft');
-      allSlides[slideInt.activePlusOne].classList.add('active');
-      allSlides[slideInt.activePlusOne].classList.remove('slideRight', 'hide');
-      allSlides[slideInt.activePlusTwo].classList.add('slideRight');
-
-      newActive = allSlides[slideInt.activePlusOne];
+      newActive = allSlides[(activeSlideIndex + 1) % allSlides.length]
+      active.classList.add('slideOutLeft');
+      newActive.classList.add('slideInRight', 'active');
     }
-  }
 
-  /**
-  * Callback function
-  */
-  function hideElement(e) {
-      e.target.classList.add('hide');
-      e.target.removeEventListener('transitionend', hideElement);
+    // Function that activates after the slide animations
+    setTimeout(() => {
       clickable = true;
+      // Remove all CSS animation classes
+      active.className = 'wbn-slide';
 
-      // Fade in the overlay text if there is any
       if (newActive.querySelector('.wbn-overlay-text')) {
         newActive.querySelector('.wbn-overlay-text').classList.add('wbn-overlay-text-show');
       }
+    }, SLIDETIME);
 
-      // Fade back the text on the old active slide by checking if the slide has an overlay text
-      if(e.target.querySelector('.wbn-overlay-text')) {
-        e.target.querySelector('.wbn-overlay-text').classList.remove('wbn-overlay-text-show');
-      }
+    // Fade back the text on the old active slide by checking if the slide has an overlay text
+    if(active.querySelector('.wbn-overlay-text')) {
+      active.querySelector('.wbn-overlay-text').classList.remove('wbn-overlay-text-show');
     }
+  }
 
   //Event listeners
   forwardButton.addEventListener('click', () => { changeSlide('forward') });

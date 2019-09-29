@@ -1,5 +1,4 @@
-document.addEventListener("DOMContentLoaded", () => {
-
+document.addEventListener('DOMContentLoaded', () => {
   // CHANGE ONLY THIS
   const SLIDETIME = 400; //ms
 
@@ -16,54 +15,56 @@ document.addEventListener("DOMContentLoaded", () => {
   initSlider();
 
   /**
-  * Function to initialize the slider
-  */
+   * Function to initialize the slider
+   */
   function initSlider() {
-
-    // Set the CSS transition on the slides to the value whe specified in SLIDETIME above
-    for (let slide of allSlides) {
-      slide.setAttribute('style', `transition: transform ${SLIDETIME}ms cubic-bezier(0.645, 0.045, 0.355, 1.000); animation-duration: ${SLIDETIME}ms`);
-    }
+    // Set the CSS transition on the slides to the value we specified in SLIDETIME above
+    allSlides.forEach(slide =>
+      slide.setAttribute(
+        'style',
+        `transition: transform ${SLIDETIME}ms cubic-bezier(0.645, 0.045, 0.355, 1.000);
+                 animation-duration: ${SLIDETIME}ms`,
+      ),
+    );
 
     const sliderHeight = document.querySelector('#wbn-slider').offsetHeight;
     // Set the height on the overlay texts to slider height if there is any
     const overlays = document.querySelectorAll('.wbn-overlay-text');
-    overlays.forEach( element => element.style.height = `${sliderHeight}px`);
+    overlays.forEach(element => (element.style.height = `${sliderHeight}px`));
   }
 
   /**
-  * Function who runs when the user has clicked either forward or backward buttons
-  *
-  * @param {string} directionn - A string containing either "back" or "forward" for knowing direction
-  */
+   * Function who runs when the user has clicked either forward or backward buttons
+   *
+   * @param {string} direction - A string containing either "back" or "forward" for knowing direction
+   */
   function changeSlide(direction) {
-    if(clickable) {
+    if (clickable) {
       clickable = false;
-      const dir = direction;
       const active = document.querySelector('.active');
-      updateUI(dir, active);
+      updateUI(direction, active);
     }
   }
 
   /**
-  * Function that redraws the slider UI.
-  *
-  * @param {string} direction - A string containing either "back" or "forward" for knowing direction
-  * @param {Object} slideInteval - An object with indexes containing the active slide, the two slides before that and the two slides after that
-  */
-  function updateUI(direction, act) {
-    const active = act;
+   * Function that redraws the slider UI.
+   *
+   * @param {string} direction - A string containing either "back" or "forward" for knowing direction
+   * @param {DOM Element} active - The active slide
+   */
+  function updateUI(direction, active) {
     const activeSlideIndex = allSlides.indexOf(active);
 
     // This is the same for both directions
     active.classList.remove('active');
 
-    if (direction === "back") {
-      newActive = allSlides[(activeSlideIndex - 1 + allSlides.length) % allSlides.length];
+    if (direction === 'back') {
+      newActive =
+        allSlides[(activeSlideIndex - 1 + allSlides.length) % allSlides.length];
       active.classList.add('slideOutRight');
       newActive.classList.add('slideInLeft', 'active');
-    } else if (direction === "forward") {
-      newActive = allSlides[(activeSlideIndex + 1) % allSlides.length]
+    } else if (direction === 'forward') {
+      newActive = allSlides[(activeSlideIndex + 1) % allSlides.length];
       active.classList.add('slideOutLeft');
       newActive.classList.add('slideInRight', 'active');
     }
@@ -75,17 +76,25 @@ document.addEventListener("DOMContentLoaded", () => {
       active.className = 'wbn-slide';
 
       if (newActive.querySelector('.wbn-overlay-text')) {
-        newActive.querySelector('.wbn-overlay-text').classList.add('wbn-overlay-text-show');
+        newActive
+          .querySelector('.wbn-overlay-text')
+          .classList.add('wbn-overlay-text-show');
       }
-    }, SLIDETIME);
+    }, SLIDETIME + 20);
 
     // Fade back the text on the old active slide by checking if the slide has an overlay text
-    if(active.querySelector('.wbn-overlay-text')) {
-      active.querySelector('.wbn-overlay-text').classList.remove('wbn-overlay-text-show');
+    if (active.querySelector('.wbn-overlay-text')) {
+      active
+        .querySelector('.wbn-overlay-text')
+        .classList.remove('wbn-overlay-text-show');
     }
   }
 
   //Event listeners
-  forwardButton.addEventListener('click', () => { changeSlide('forward') });
-  backButton.addEventListener('click', () => { changeSlide('back') });
+  forwardButton.addEventListener('click', () => {
+    changeSlide('forward');
+  });
+  backButton.addEventListener('click', () => {
+    changeSlide('back');
+  });
 });

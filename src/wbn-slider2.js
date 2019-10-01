@@ -29,22 +29,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (clickable) {
       clickable = false;
       active = document.querySelector('.active');
-      updateUI(direction);
-    }
-  }
+      const activeSlideIndex = allSlides.indexOf(active);
 
-  function updateUI(direction) {
-    const activeSlideIndex = allSlides.indexOf(active);
-
-    if (direction === 'back') {
-      newActive =
-        allSlides[(activeSlideIndex - 1 + allSlides.length) % allSlides.length];
-      active.classList.add('slideOutRight');
-      newActive.classList.add('slideInLeft', 'active');
-    } else if (direction === 'forward') {
-      newActive = allSlides[(activeSlideIndex + 1) % allSlides.length];
-      active.classList.add('slideOutLeft');
-      newActive.classList.add('slideInRight', 'active');
+      if (direction === 'back') {
+        newActive =
+          allSlides[
+            (activeSlideIndex - 1 + allSlides.length) % allSlides.length
+          ];
+        active.classList.add('slideOutRight');
+        newActive.classList.add('slideInLeft', 'active');
+      } else if (direction === 'forward') {
+        newActive = allSlides[(activeSlideIndex + 1) % allSlides.length];
+        active.classList.add('slideOutLeft');
+        newActive.classList.add('slideInRight', 'active');
+      }
     }
   }
 
@@ -61,7 +59,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Check for the old active transition an if clickable is false
       // to not trigger it more than once
       if (slide === active && !clickable) {
-        console.log("jaha")
         clickable = true;
         // Remove all CSS animation classes on old active
         active.className = 'wbn-slide';

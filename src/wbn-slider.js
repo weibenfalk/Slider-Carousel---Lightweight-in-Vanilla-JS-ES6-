@@ -1,14 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   // CHANGE ONLY THIS
-  const SLIDETIME = 400; //ms
-
+  const SLIDETIME = 300; //ms
   // --------------------------
 
   const backButton = document.querySelector('.wbn-slider-back-btn');
   const forwardButton = document.querySelector('.wbn-slider-next-btn');
   // Select all slides and convert node to array for easy handling
   const allSlides = Array.from(document.querySelectorAll('.wbn-slide'));
-  let newActive;
   let clickable = true;
 
   // Init the slider
@@ -22,15 +20,15 @@ document.addEventListener('DOMContentLoaded', () => {
     allSlides.forEach(slide =>
       slide.setAttribute(
         'style',
-        `transition: transform ${SLIDETIME}ms cubic-bezier(0.645, 0.045, 0.355, 1.000);
+        `transition: transform ${SLIDETIME}ms ease;
                  animation-duration: ${SLIDETIME}ms`,
       ),
     );
 
-    const sliderHeight = document.querySelector('#wbn-slider').offsetHeight;
-    // Set the height on the overlay texts to slider height if there is any
-    const overlays = document.querySelectorAll('.wbn-overlay-text');
-    overlays.forEach(element => (element.style.height = `${sliderHeight}px`));
+    // const sliderHeight = document.querySelector('#wbn-slider').offsetHeight;
+    // // Set the height on the overlay texts to slider height if there is any
+    // const overlays = document.querySelectorAll('.wbn-overlay-text');
+    // overlays.forEach(element => (element.style.height = `${sliderHeight}px`));
   }
 
   /**
@@ -54,9 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
    */
   function updateUI(direction, active) {
     const activeSlideIndex = allSlides.indexOf(active);
-
-    // This is the same for both directions
-    active.classList.remove('active');
+    let newActive = null;
 
     if (direction === 'back') {
       newActive =
@@ -72,22 +68,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // Function that activates after the slide animations
     setTimeout(() => {
       clickable = true;
-      // Remove all CSS animation classes
+      // Remove all CSS animation classes on old active
       active.className = 'wbn-slide';
 
-      if (newActive.querySelector('.wbn-overlay-text')) {
-        newActive
-          .querySelector('.wbn-overlay-text')
-          .classList.add('wbn-overlay-text-show');
-      }
+      // if (newActive.querySelector('.wbn-overlay-text')) {
+      //   newActive
+      //     .querySelector('.wbn-overlay-text')
+      //     .classList.add('wbn-overlay-text-show');
+      // }
     }, SLIDETIME + 20);
 
     // Fade back the text on the old active slide by checking if the slide has an overlay text
-    if (active.querySelector('.wbn-overlay-text')) {
-      active
-        .querySelector('.wbn-overlay-text')
-        .classList.remove('wbn-overlay-text-show');
-    }
+    // if (active.querySelector('.wbn-overlay-text')) {
+    //   active
+    //     .querySelector('.wbn-overlay-text')
+    //     .classList.remove('wbn-overlay-text-show');
+    // }
   }
 
   //Event listeners

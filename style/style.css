@@ -1,50 +1,38 @@
 body {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
 }
 
 #wbn-slider {
-  position:relative;
-  width:100%;
-  min-height:800px;
-  margin:0;
-  padding:0;
-  overflow:hidden;
+  position: relative;
+  height: 50vw;
+  overflow: hidden;
 }
 
 .wbn-slide {
-  display:flex;
-  position:absolute;
-  min-height:inherit;
-  width:100%;
-  z-index:500;
-
+  position: absolute;
+  width: 100%;
+  z-index: 500;
+  height: 50vw;
 }
 
 .wbn-slide img {
   object-fit: cover;
-  min-height:inherit;
-  width:100%;
+  width: 100%;
   pointer-events: none;
 }
 
 .active {
-  z-index:1000;
+  z-index: 1000;
 }
 
 .slideInLeft {
-  /* transform: translateX(-100%); */
   animation-name: animateInLeft;
-  /* animation-duration: 400ms; */
-  animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
   z-index: 1000;
 }
 
 .slideInRight {
-  /* transform: translateX(100%); */
   animation-name: animateInRight;
-  /* animation-duration: 400ms; */
-  animation-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1.000);
   z-index: 1000;
 }
 
@@ -57,65 +45,60 @@ body {
 }
 
 @keyframes animateInLeft {
-  0% { transform: translateX(-100%) }
-  100% { transform: translateX(0%) }
-  from { transform: translateX(-100%) }
-  to { transform: translateX(0%) }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 @keyframes animateInRight {
-  0% { transform: translateX(100%) }
-  100% { transform: translateX(0%) }
-  from { transform: translateX(100%) }
-  to { transform: translateX(0%) }
-}
-
-.hide {
-  opacity:0;
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
 }
 
 .wbn-slider-btn-wrapper {
   display: flex;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  flex-direction:column;
-  justify-content:center;
-  z-index:10000;
-  top:0;
-  height:100%;
-  padding:0 20px 0 20px;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 10000;
+  height: 100%;
+  padding: 0 20px 0 20px;
   user-select: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 .wbn-slider-btn-wrapper.left {
-  position:absolute;
-    left:0;
-  }
-
-.wbn-slider-btn-wrapper.right {
-  position:absolute;
-  right:0;
+  position: absolute;
+  left: 0;
 }
 
-.wbn-slider-back-btn, .wbn-slider-next-btn {
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
+.wbn-slider-btn-wrapper.right {
+  position: absolute;
+  right: 0;
+}
+
+.wbn-slider-back-btn,
+.wbn-slider-next-btn {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   background: #fff;
-  font-size:24px;
-  opacity:0.7;
+  font-size: 24px;
+  opacity: 0.7;
   border-radius: 50px;
-  width:70px;
-  height:70px;
+  width: 70px;
+  height: 70px;
   transition: all 0.2s;
 }
 
-.wbn-slider-back-btn:hover , .wbn-slider-next-btn:hover {
+.wbn-slider-back-btn:hover,
+.wbn-slider-next-btn:hover {
   transform: scale(1.1);
   opacity: 0.8;
   cursor: pointer;
@@ -125,36 +108,37 @@ body {
   display: flex;
   display: -ms-flexbox;
   display: -webkit-flex;
-  flex-direction:column;
-  justify-content:center;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width:100%;
+  width: 100%;
+  height: 100%;
   color: white;
-  position:absolute;
-  top:0;
-  left:0;
-  z-index:10000;
-  opacity:0;
-  transform: translateY(10%);
-  transition: all 400ms cubic-bezier(0.645, 0.045, 0.355, 1.000); /* easeInOutExpo */;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10000;
+  opacity: 1;
+  /* transform: translateY(10%);
+  transition: all 400ms ease; */
 }
 
 .wbn-overlay-text .wbn-header {
   font-family: 'Chivo', sans-serif;
-  font-size:80px;
-  font-weight:800;
+  font-size: 80px;
+  font-weight: 800;
 }
 
- .wbn-overlay-text .wbn-text {
-  font-family:Arial, Helvetica, sans-serif;
-  text-align:center;
-  font-size:22px;
-  line-height:30px;
-  color:white;
-  max-width:30%;
+.wbn-overlay-text .wbn-text {
+  font-family: Arial, Helvetica, sans-serif;
+  text-align: center;
+  font-size: 22px;
+  line-height: 30px;
+  color: white;
+  max-width: 30%;
 }
 
 .wbn-overlay-text-show {
   transform: translateY(0);
-  opacity:1;
+  opacity: 1;
 }
